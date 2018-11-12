@@ -4,7 +4,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 're
 const  DishDetailComponent = (props) =>{
 
 	let  dish  = props.selectedDish;
-	if (dish !== null && dish !== undefined) {
+	if (dish != null ) {
 		
 	  return (
 	  <React.Fragment>
