@@ -15,10 +15,7 @@ import Contact from './ContactComponent';
 import  {Switch, Route, Redirect} from 'react-router-dom';
 
 class Main extends Component {
-  /**
-   * Constructor
-   * @param props properties
-   */
+
   constructor(props) {
     super(props);
 
@@ -26,15 +23,11 @@ class Main extends Component {
       dishes: DISHES,
 	  comments: COMMENTS,
 	  promotions: PROMOTIONS,
-	  leaders: LEADERS,
-	  selectedDish: null
+	  leaders: LEADERS
     };
   }
 
-  /**
-   * All React components must
-   * implement the render() method
-   */
+
   render() {
 	const HomeComponent = () => {
 		return (
@@ -45,6 +38,12 @@ class Main extends Component {
 			leader= {this.state.leaders.filter( (leader) =>leader.featured)[0]}
 		/>);
 	};
+	const DishWithId = ({match})  => {
+		return (
+			<DishDetailComponent selectedDish={this.state.dishes.filter( (dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+			comments={this.state.comments.filter( (comment) => comment.dishId === parseInt(match.params.dishId,10))}/>
+		);
+	};
     return (
 		<div>
 			<Header/>
@@ -52,6 +51,7 @@ class Main extends Component {
 				<Route path="/home" component={HomeComponent}/> 
 				<Route exact path="/contactus" component={Contact}/> 
 				<Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} selectDish={this.handleSelectDish}/>}/> 
+				<Route path="/menu/:dishId" component={DishWithId} />
 				<Redirect to="/home" />
 			</Switch>
 			<Footer/>
