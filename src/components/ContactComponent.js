@@ -1,8 +1,41 @@
-import React from 'react';
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import React,{Component} from 'react';
+import {Breadcrumb, BreadcrumbItem, Button,Form, FormGroup, Label, Input, Col} from 'reactstrap';
 import {Link} from 'react-router-dom';
-const Contact = () =>{
-	return(
+
+//Ive upgraded this from a function component to a class component so that Ill make a controlled form
+class Contact extends Component{
+	constructor(props){
+		super(props);
+		this.state = {
+			firstname: '',
+			lastname: '',
+			telnum: '',
+			email: '',
+			agree: false,
+			contactType: 'Tel.',
+			message: ''
+		}
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+	}
+	
+	handleInputChange(event){
+		const target = event.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value; 
+		/***if the target is a check the value is retrieved from the target.checked and if its not the value is retrieved from the target.value ***/
+		
+		const name = target.name; /**the names of the inputs must be the same as the state variables above*/
+		this.setState({[name]:value});/***Square brackets!! to refer to an element of the state object***/
+		
+	}
+	handleSubmit(event){
+		console.log("Current state is: " + JSON.stringify(this.state));
+		alert("Current state is: " + JSON.stringify(this.state));
+		event.preventDefault();
+	}
+	
+	render(){
+		return(
         <div className="container">
 			<div className="row">
 				<Breadcrumb>
@@ -41,8 +74,98 @@ const Contact = () =>{
                     </div>
                 </div>
             </div>
+			<div className="row row-content">
+				<div className="col-12">
+					<h3>Send us your Feedback</h3>
+					<div className="col-12 col-md-9">
+						<Form onSubmit={this.handleSubmit}>
+							<FormGroup row>
+								<Label htmlFor="firstname" md={2}>First Name</Label>
+								<Col md={10}>
+									<Input type="text" id="firstname" name="firstname"
+										placeholder="First Name"
+										value={this.state.firstname} 
+										onChange={this.handleInputChange}/>
+									
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Label htmlFor="lastname" md={2}>Last Name</Label>
+								<Col md={10}>
+									<Input type="text" id="lastname" name="lastname"
+										placeholder="Last Name"
+										value={this.state.lastname} 
+										onChange={this.handleInputChange}/>
+									
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Label htmlFor="telnum" md={2}>Tel. Number</Label>
+								<Col md={10}>
+									<Input type="text" id="telnum" name="telnum"
+										placeholder="Telephone Number"
+										value={this.state.telnum} 
+										onChange={this.handleInputChange}/>
+									
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Label htmlFor="email" md={2}>Email</Label>
+								<Col md={10}>
+									<Input type="text" id="email" name="email"
+										placeholder="Email"
+										value={this.state.email} 
+										onChange={this.handleInputChange}/>
+									
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Col md={{size: 6, offset: 2}}>
+									<FormGroup check>
+										<Label check>
+											<Input type="checkbox" name="agree" checked={this.state.agree} onChange={this.handleInputChange} /> {' '}
+											<strong>May we contact you?</strong>
+										</Label>
+									</FormGroup>
+								</Col>
+								<Col md={{size: 3, offset: 1}}>
+									<Input type="select" name="contacType"
+										onChange={this.handleInputChange}
+										value={this.state.contactType}>
+										<option>Tel. Num.</option>
+										<option>Email</option>
+									</Input>
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Label htmlFor="message" md={2}>Your Feedback</Label>
+								<Col md={10}>
+									<Input type="textarea" id="message" name="message"
+										onChange={this.handleInputChange}
+										rows="12"
+										value={this.state.message} />
+									
+								</Col>
+							</FormGroup>
+							
+							<FormGroup row>
+								<Col md={{size:10, offset:2}}>
+									<Button type="submit" color="primary">
+										Send Feedback
+									</Button>
+								</Col>
+							</FormGroup>
+						</Form>
+					</div>
+				</div>
+			
+			</div>
+			
+			
         </div>
     );
+		
+	}
 }
 
 export default Contact;
