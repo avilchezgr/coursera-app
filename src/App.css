@@ -31,3 +31,9 @@ address{
 .navbar-dark {
     background-color: #512DA8;
 }
+.pad25top{
+	padding-top:25px;
+}
+.margbot15{
+	margin-bottom:15px;
+}
