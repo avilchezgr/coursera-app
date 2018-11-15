@@ -1,6 +1,92 @@
 import React, {Component} from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import {Label, Col, Row, Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Modal, ModalHeader, 
+ModalBody, ModalFooter, Button} from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {LocalForm, Control, Errors} from 'react-redux-form';
+
+ const minLength = (len) => (val) => (val && (val.length >= len));
+ const maxLength = (len) => (val) => (!(val) || (val.length <= len));
+
+class CommentForm extends Component{
+	
+	constructor(props){
+		super(props);
+		this.state = {modal:false};
+	}
+	
+	toggle = () =>{
+		this.setState({
+			modal: !this.state.modal
+		});
+	}
+	handleSubmit = (values) =>{
+		alert("Current state is: " + JSON.stringify(values));
+	}
+	render(){
+		return (
+		<div>
+			<Button outline color="secondary" onClick={this.toggle}><span className="fa fa-pencil"></span> Submit Comment</Button> 
+			<Modal isOpen={this.state.modal} toggle={this.toggle}>
+				<ModalHeader toggle={this.toggle}>Submit Comment</ModalHeader>
+				<ModalBody>
+					<LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+						<Row className="form-group">
+							<Label htmlFor="rating" md={12}>Rating</Label>
+							<Col >
+								<Control.select  
+									className="form-control" model=".rating" name="rating">
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</Control.select>
+							</Col>
+						</Row>
+						
+						
+						<Row className="form-group">
+							<Col md={12}>
+								<Label htmlFor="author">Your Name</Label>
+							</Col>
+							<Col md={12}>
+								<Control.text model=".author" id="name" name="author" 
+									className="form-control"
+									placeholder="Your Name"
+									validators={{minLength:minLength(3),maxLength:maxLength(15)}}
+								/>
+								<Errors 
+										className="text-danger" 
+										model=".author"
+										show="touched"
+										messages={{
+											minLength: 'Must be greater than 2 characters',
+											maxLength: 'Must be 15 characters or less'
+										}}
+									/>
+							</Col>
+						</Row>
+						<Row className="form-group">
+							<Label htmlFor="comment" md={12}>Comment</Label>
+							<Col>
+								<Control.textarea model=".comment" id="comment" name="comment" className="form-control" rows="5"></Control.textarea>
+							</Col>
+						</Row>
+						<Button type="submit" color="primary">Submit</Button>
+					</LocalForm>
+				</ModalBody>
+				<ModalFooter>
+				</ModalFooter>
+			</Modal>
+		</div>
+		);
+	}
+}
+
+
+
+
+
 const  DishDetailComponent = (props) =>{
 
 	let  dish  = props.selectedDish;
@@ -67,6 +153,7 @@ const DishDetailComments = ({comments}) =>{
 			<CardBody>
 			<CardTitle>Comments</CardTitle>
 			<CardText>{commentList}</CardText>
+			<CommentForm/>
 		  </CardBody>
 		</div>
 	

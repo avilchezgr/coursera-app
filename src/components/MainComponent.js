@@ -48,7 +48,7 @@ class Main extends Component {
 			<About
 				leaders={this.props.leaders}
 			/>);
-	};
+	}; 
     return (
 		<div>
 			<Header/>
