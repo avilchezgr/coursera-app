@@ -20,7 +20,8 @@ class CommentForm extends Component{
 		});
 	}
 	handleSubmit = (values) =>{
-		alert("Current state is: " + JSON.stringify(values));
+		this.toggle();
+		this.props.addComment(this.props.dishId, values.rating,values.author,values.comment);
 	}
 	render(){
 		return (
@@ -119,6 +120,8 @@ const  DishDetailComponent = (props) =>{
 					 
 						<DishDetailComments 
 							comments = {props.comments}
+							addComment={props.addComment}
+							dishId={dish.id}
 						/>
 			
 			</div>
@@ -135,7 +138,7 @@ const  DishDetailComponent = (props) =>{
 	
 }
 
-const DishDetailComments = ({comments}) =>{
+const DishDetailComments = ({comments,addComment,dishId}) =>{
 	
 	const commentList = comments.map( (comment) => {
 		return (<div key={comment.id}>
@@ -153,7 +156,7 @@ const DishDetailComments = ({comments}) =>{
 			<CardBody>
 			<CardTitle>Comments</CardTitle>
 			<CardText>{commentList}</CardText>
-			<CommentForm/>
+			<CommentForm dishId={dishId} addComment={addComment}/>
 		  </CardBody>
 		</div>
 	
