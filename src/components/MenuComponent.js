@@ -3,7 +3,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrum
 import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComponent';
 
-function RenderMenuItem ({selectDish,dish}) {
+function RenderMenuItem ({dish}) {
 	
 	return (
 		  <Card>
@@ -25,7 +25,7 @@ function RenderMenuItem ({selectDish,dish}) {
       return (
         <div key={dish.id} className="col-12 col-md-5 m-1">
 			<RenderMenuItem 
-				selectDish={props.selectDish}
+				
 				dish={dish}
 			/>
         </div>
