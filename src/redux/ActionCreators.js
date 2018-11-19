@@ -5,6 +5,49 @@ export const addComment = (comment) => ({
 	type: ActionTypes.ADD_COMMENT,
 	payload:comment
 });
+export const postFeedback = (firstName, lastName, telnum, email, agree, contactType, message) => (dispatch) => {
+	const newFeedback = {
+		firstname: firstName,
+		lastname: lastName,
+		telnum: telnum,
+		email: email,
+		agree: agree,
+		contactType: contactType,
+		message: message
+	}
+	
+	return fetch( baseUrl + 'feedback', {
+		method: 'POST',
+		body: JSON.stringify(newFeedback),
+		headers:{
+			'Content-Type': 'application/json'
+		}, 
+		credentials: 'same-origin'
+	})
+	.then(response => {
+		if(response.ok){
+			return response
+		}else{
+			var error = new Error("Error " + response.status+ ": " + response.statusText);
+			error.response = response;
+			throw error;
+		}
+	},error =>{
+		var errmess = new Error(error.message);
+		throw errmess
+	})
+	.then( response => response.json())
+	.then(response => alert('Thank you for your feedback! ' + JSON.stringify(response))
+	)
+	.catch(error => {
+		console.log('Post comments',error.message);
+		alert('Your comment might not be posted\nError: ' + error.message)
+	});
+	
+	
+	
+};
+
 export const postComment = (dishId, rating, author, comment) => (dispatch) => {
 	
 	const newComment = {
@@ -66,6 +109,25 @@ export const fetchDishes = () => (dispatch) => {
 	.catch(error => dispatch(dishesFailed(error.message)));
 	
 };
+export const fetchLeaders = () => (dispatch) => {
+	return fetch(baseUrl + 'leaders')
+	.then(response => {
+		if(response.ok){
+			return response;
+		}else{
+			var error = new Error("Error " + response.status+ ": " + response.statusText);
+			error.response = response;
+			throw error;
+		}
+	}, error => {
+		var errmess = new Error(error.message);
+		throw errmess
+	})
+	.then(response => response.json())
+	.then(leaders => dispatch(addLeaders(leaders)))
+	.catch(error => dispatch(leadersFailed(error.message)));
+}
+
 
 export const fetchComments = () => (dispatch) => {
 	
@@ -89,6 +151,17 @@ export const fetchComments = () => (dispatch) => {
 		.catch( error => dispatch(commentsFailed(error.message)));
 	
 };
+export const addLeaders = (leaders) => ({
+	type: ActionTypes.ADD_LEADERS,
+	payload: leaders
+});
+export const leadersLoading = () => ({
+	type: ActionTypes.LEADERS_LOADING
+});
+export const leadersFailed = (errmess) => ({
+	type: ActionTypes.LEADERS_FAILED,
+	payload: errmess
+});
 export const addComments = (comments) => ({
 	
 	type: ActionTypes.ADD_COMMENTS,

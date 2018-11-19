@@ -1,38 +1,71 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
-
+import {Loading} from './LoadingComponent';
+import {baseUrl} from '../shared/baseUrl';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 const RenderLeader = ({leader}) => {
-	return (
-	<div className="container ">
+	
+			return (
+				<div className="container ">
 
-		<div className="row margbot15">
-			<div className="col-1 m-1">
-				<Media object src="assets/images/alberto.png" alt={leader.name}/>
-			</div>
-			<div className="col-10 m-1">
-				<Media body className="ml-5">
-					<Media heading><h4>{leader.name}</h4></Media>
-					<p>{leader.designation}</p>
-					<p>{leader.description}</p>
-				</Media>
-			</div>
-		</div>
-		
-		</div>
-	);
+					<div className="row margbot15">
+						<div className="col-1 m-1">
+							<Media object src={baseUrl + leader.image} alt={leader.name}/>
+						</div>
+						<div className="col-10 m-1">
+							<Media body className="ml-5">
+								<Media heading><h4>{leader.name}</h4></Media>
+								<p>{leader.designation}</p>
+								<p>{leader.description}</p>
+							</Media>
+						</div>
+					</div>
+					
+				</div>
+			);
+	
+	
 }
 
 
 function About(props) {
-    const leaders = props.leaders.map((leader) => {
-        return (
-			<RenderLeader leader={leader}/>
-        );
-    });
+    let leaders;
+	
+	if(props.isLoading){
+		leaders = (
+			<div className="container">
+				<div className="row">
+					<Loading />
+				</div>
+			</div>
+		);
+	}else if(props.errorMess){
+		leaders = (
+			<div className="container">
+				<div className="row">
+					<h4>{props.errorMess}</h4>
+				</div>
+			</div>
+		);
+		
+	}else if(props.leaders != null){
+		leaders = (
+			<Stagger in>
+			{props.leaders.map((leader) => {
+					return (
+						<Fade in>
+							<RenderLeader leader={leader} />
+						</Fade>
+					);
+				})}
+			</Stagger>
+		);
 
+	}
+	
+	
     return(
         <div className="container">
             <div className="row">

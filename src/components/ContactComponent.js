@@ -19,7 +19,7 @@ class Contact extends Component{
 
 	handleSubmit(values){
 		console.log("Current state is: " + JSON.stringify(values));
-		alert("Current state is: " + JSON.stringify(values));
+		this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message)
 		this.props.resetFeedbackForm();
 	}
 	
@@ -123,7 +123,7 @@ class Contact extends Component{
 										
 									<Errors 
 										className="text-danger" 
-										model=".lastname"
+										model=".telnum"
 										show="touched"
 										messages={{
 											required: 'Required',
@@ -145,7 +145,7 @@ class Contact extends Component{
 										
 									<Errors 
 										className="text-danger" 
-										model=".lastname"
+										model=".email"
 										show="touched"
 										messages={{
 											required: 'Required',
